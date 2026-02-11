@@ -45,6 +45,45 @@ Following the Schymanski et al. (2014) framework:
 
 ## Pipeline Architecture
 
+0. Spectral Library Preparation (Preprocessing)
+Before machine learning classification, three preprocessing scripts prepare custom spectral libraries:
+
+# A. NORMAN Database Curation (norman_database_curation_310.ipynb)
+Filters and standardizes the NORMAN Suspect Database for urban-relevant contaminants. The goal is to create a a focused, MS-ready suspect list for precursor matching.
+Input: 
+   NORMAN SusDat filtered by 14 use categories (Biocides, PFAS, Industrial chemicals, PPCPs, Plastic additives, etc.)
+Processing:
+   RDKit-based SMILES standardization (salt removal, fragment selection, neutralization, tautomer canonicalization)
+   Molecular weight filtering (100–1000 Da)
+   Duplicate removal based on canonical SMILES
+Output: 
+   CuratedSuspectList.csv with canonical structures and calculated molecular formulas
+
+# B. MoNA Database Curation (MoNA-database-curation.ipynb)
+Curates experimental MS/MS spectra from MassBank of North America (MoNA). The goal is to Ensures only high-quality HRMS spectra are used for Level 2a identifications.
+Input: 
+   MoNA MSP export file
+Processing:
+   MS² spectrum quality filtering (minimum 3 peaks, MS2 spectrum type required)
+   Decimal precision filter: Retains only high-resolution spectra where ≥90% of fragment peaks have ≥4 decimal places in m/z values
+   Precursor m/z extraction from comments (supports [M+H]⁺, [M−H]⁻, and other adducts)
+   Metadata promotion (InChIKey, SMILES, retention time, etc.)
+Output: 
+   MoNAcuratedwithprecursors.msp for import into mzVault
+
+# C. In-Silico Library Generation (in-silico-libraries.ipynb)
+Matches experimental data against NORMAN suspects and generates predicted MS/MS spectra. The goal is to generate insilico libraries in mzVault compatible format.
+   Step 1: Extract all MS² precursor m/z values from experimental .mzML files
+   Step 2: Match experimental precursors against curated NORMAN suspects using 5 ppm tolerance
+   Step 3: Export matched suspects as SMILES input for CFM-ID
+   Step 4: Run CFM-ID batch prediction (external tool, not included) at 10, 20, and 40 eV collision energies
+   Step 5: Parse CFM-ID output and format predicted spectra as MSP files for mzVault
+Output: In-silico spectral libraries for positive and negative ionization modes (cfmidpredicted_10eV_PI.msp, etc.)
+
+
+
+Workflow Integration: These three preprocessing notebooks generate the dual-library architecture (experimental + in-silico) used in Compound Discoverer for non-target compound annotation. The outputs feed directly into the machine learning pipeline below.
+
 The analysis consists of three integrated components:
 
 ### 1. Model Selection 
@@ -130,6 +169,34 @@ pip install -r requirements.txt
 # Run the complete pipeline
 python nta_classification_pipeline.py
 ```
+Preprocessing Workflow (Optional)
+If you want to regenerate spectral libraries from scratch:
+
+Curate NORMAN database:
+
+bash
+jupyter notebook preprocessing/norman_database_curation_310.ipynb
+Input: NORMAN SusDat CSV (filtered by use categories)
+
+Output: CuratedSuspectList.csv
+
+Curate MoNA experimental library:
+
+bash
+jupyter notebook preprocessing/MoNA-database-curation.ipynb
+Input: MoNA-export-LC-MS-MSSpectra.msp
+
+Output: MoNAcuratedwithprecursors.msp
+
+Generate in-silico libraries:
+
+bash
+jupyter notebook preprocessing/in-silico-libraries.ipynb
+Input: Experimental .mzML files + CuratedSuspectList.csv
+
+Output: MSP libraries for CFM-ID predicted spectra (10, 20, 40 eV)
+
+Note: CFM-ID prediction is performed externally via command-line tool (not included). See CFM-ID documentation for installation.
 
 ### Input Data Format
 
