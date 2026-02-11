@@ -48,7 +48,7 @@ Following the Schymanski et al. (2014) framework:
 0. Spectral Library Preparation (Preprocessing)
 Before machine learning classification, three preprocessing scripts prepare custom spectral libraries:
 
-# A. NORMAN Database Curation (norman_database_curation_310.ipynb)
+### A. NORMAN Database Curation (norman_database_curation_310.ipynb)
 Filters and standardizes the NORMAN Suspect Database for urban-relevant contaminants. The goal is to create a a focused, MS-ready suspect list for precursor matching.
 Input: 
    NORMAN SusDat filtered by 14 use categories (Biocides, PFAS, Industrial chemicals, PPCPs, Plastic additives, etc.)
@@ -59,7 +59,7 @@ Processing:
 Output: 
    CuratedSuspectList.csv with canonical structures and calculated molecular formulas
 
-# B. MoNA Database Curation (MoNA-database-curation.ipynb)
+### B. MoNA Database Curation (MoNA-database-curation.ipynb)
 Curates experimental MS/MS spectra from MassBank of North America (MoNA). The goal is to Ensures only high-quality HRMS spectra are used for Level 2a identifications.
 Input: 
    MoNA MSP export file
@@ -71,7 +71,7 @@ Processing:
 Output: 
    MoNAcuratedwithprecursors.msp for import into mzVault
 
-# C. In-Silico Library Generation (in-silico-libraries.ipynb)
+### C. In-Silico Library Generation (in-silico-libraries.ipynb)
 Matches experimental data against NORMAN suspects and generates predicted MS/MS spectra. The goal is to generate insilico libraries in mzVault compatible format.
    Step 1: Extract all MS² precursor m/z values from experimental .mzML files
    Step 2: Match experimental precursors against curated NORMAN suspects using 5 ppm tolerance
