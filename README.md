@@ -115,19 +115,13 @@ Rigorous validation with SHAP-based explainability:
 pip install -r requirements.txt
 ```
 
-### Dependencies
-
-See `requirements.txt` for the complete list of dependencies.
-
----
-
 ## Usage
 
 ### Quick Start
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/nta-stormwater-classification.git
+git clone [https://github.com/koronaiou/urban-water-runoff.git]
 cd nta-stormwater-classification
 
 # Install dependencies
@@ -181,21 +175,6 @@ Bayesian optimization using Optuna with TPE (Tree-structured Parzen Estimator) s
 
 ---
 
-## Citation
-
-```bibtex
-@article{YourName2025,
-  title={Machine Learning-Based Source Apportionment of Urban Stormwater Runoff 
-         Using Nontarget High-Resolution Mass Spectrometry},
-  author={Your Name and Collaborators},
-  journal={Environmental Science and Technology},
-  year={2025},
-  doi={XX.XXXX/acs.est.XXXXXXX}
-}
-```
-
----
-
 ## References
 
 1. Schymanski, E. L., et al. (2014). Identifying small molecules via high resolution mass spectrometry: communicating confidence. *Environmental Science & Technology*, 48(4), 2097-2098.
@@ -208,10 +187,26 @@ Bayesian optimization using Optuna with TPE (Tree-structured Parzen Estimator) s
 
 ## License
 
-MIT License — see LICENSE file for details.
+Requirements
+Python ≥ 3.8
+numpy>=1.21.0
+pandas>=1.3.0
+scipy>=1.7.0
+scikit-learn>=1.0.0
+xgboost>=1.5.0
+optuna>=3.0.0
+shap>=0.40.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
 
+## Citation
+If you use this code or data in your research, please cite our corresponding publication:
+
+Urban Runoff as a Vector of Emerging Contaminants: Chemical fingerprinting via advanced HRMS Workflow and Machine Learning
+Lelouda-Athanasia Koronaiou, Vasileios Alampanos, Tome Eftimov, Dimitri Abrahamsson, Dimitra A. Lambropoulou
 ---
 
 ## Contact
 
-For questions or collaboration inquiries, please contact [your.email@institution.edu].
+Corresponding author: Tel: +30 2310 997687, Fax: +30 2310 997799
+E-mail: dlambro@chem.auth.gr (Dr. D. Lambropoulou)
